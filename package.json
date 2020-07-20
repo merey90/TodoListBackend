@@ -1,5 +1,5 @@
 {
-  "name": "TodoList",
+  "name": "todo-list-backend",
   "version": "0.0.0",
   "scripts": {
     "build": "node build.js",

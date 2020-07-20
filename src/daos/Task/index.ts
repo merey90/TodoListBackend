@@ -1,6 +1,7 @@
-import mongoose from 'mongoose';
+import { Schema, model } from 'mongoose';
+import { ITask } from '@entities/Task';
 
-const taskSchema = new mongoose.Schema({
+const taskSchema = new Schema({
   title: {
     type: String,
     required: true,
@@ -14,6 +15,10 @@ const taskSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
 });
 
-export const TaskModel = mongoose.model('Task', taskSchema);
+export const TaskModel = model<ITask>('Task', taskSchema);

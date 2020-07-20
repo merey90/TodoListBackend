@@ -1,46 +1,39 @@
 import { Request, Response, Router } from 'express';
-import { BAD_REQUEST, CREATED, OK } from 'http-status-codes';
+import { CREATED, OK } from 'http-status-codes';
+import { ParamsDictionary } from 'express-serve-static-core';
 
 import { UserModel } from '@daos/User';
 
-// Init shared
 const router = Router();
 
-/******************************************************************************
- *                      Get All Users - "GET /api/users/all"
- ******************************************************************************/
-
 router.get('/', async (req: Request, res: Response) => {
-  UserModel.find({}, (err, users) => {
-    if (err) {
-      return res.status(BAD_REQUEST).json({
-        error: err,
-      });
-    }
-    return res.status(OK).json({ users });
-  });
+  const users = await UserModel.find({});
+  res.status(OK).json(users);
 });
 
-/******************************************************************************
- *                       Add One - "POST /api/users/add"
- ******************************************************************************/
+router.get('/:id', async (req: Request, res: Response) => {
+  const { id } = req.params as ParamsDictionary;
+  const user = await UserModel.findById(id);
+  res.status(OK).json(user);
+});
+
+router.get('/:id/todos', async (req: Request, res: Response) => {
+  const { id } = req.params as ParamsDictionary;
+  const user = await UserModel.findById(id).populate('todos');
+  res.status(OK).json(user!.todos);
+});
 
 router.post('/', async (req: Request, res: Response) => {
   const { login, password, name, surname } = req.body;
-  try {
-    const newUser = new UserModel({
-      login,
-      password,
-      name,
-      surname,
-    });
-    await newUser.save();
-    return res.status(CREATED).send({ userId: newUser.id });
-  } catch (err) {
-    return res.status(BAD_REQUEST).json({
-      error: err,
-    });
-  }
+  const newUser = new UserModel({
+    login,
+    password,
+    name,
+    surname,
+    todos: [],
+  });
+  await newUser.save();
+  res.status(CREATED).send({ userId: newUser.id });
 });
 
 export default router;

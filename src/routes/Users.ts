@@ -7,14 +7,8 @@ import { UserModel } from '@daos/User';
 const router = Router();
 
 router.get('/', async (req: Request, res: Response) => {
-  console.log('req: ', req);
-  try {
-    const users = await UserModel.find({});
-    res.status(OK).json(users);
-  } catch (error) {
-    console.log('error: ', error);
-    res.status(BAD_REQUEST).json({ error });
-  }
+  const users = await UserModel.find({});
+  res.status(OK).json(users);
 });
 
 router.get('/:id', async (req: Request, res: Response) => {

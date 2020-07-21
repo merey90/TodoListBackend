@@ -18,6 +18,9 @@
     ],
     "exec": "ts-node -r tsconfig-paths/register ./src"
   },
+  "engines": {
+    "node": "10.x"
+  },
   "_moduleAliases": {
     "@daos": "dist/daos",
     "@entities": "dist/entities",

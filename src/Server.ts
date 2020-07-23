@@ -17,10 +17,10 @@ const app = express();
  *                              Set basic express settings
  ***********************************************************************************/
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors());
 
 // Show routes called in console during development
 if (process.env.NODE_ENV === 'development') {
